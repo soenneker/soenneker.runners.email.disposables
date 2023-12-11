@@ -5,6 +5,7 @@ using Soenneker.Runners.Email.Disposables.Utils.Abstract;
 using Soenneker.Utils.Dotnet.NuGet.Registrars;
 using Soenneker.Utils.Dotnet.Registrars;
 using Soenneker.Utils.File.Registrars;
+using Soenneker.Utils.FileSync.Registrars;
 using Soenneker.Utils.HttpClientCache.Registrar;
 using Soenneker.Utils.SHA3.Registrars;
 
@@ -26,6 +27,7 @@ public class Startup
         services.AddHttpClientCache();
         services.AddHostedService<ConsoleHostedService>();
         services.AddFileUtilAsScoped();
+        services.AddFileUtilSyncAsScoped();
         services.AddGitUtilAsScoped();
         services.AddSha3UtilAsScoped();
         services.AddScoped<IDownloadUtil, DownloadUtil>();
