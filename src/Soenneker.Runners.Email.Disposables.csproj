@@ -15,7 +15,7 @@
         <AssemblyName>Soenneker.Runners.Email.Disposables</AssemblyName>
         <PackageId>Soenneker.Runners.Email.Disposables</PackageId>
         <PackageTags>runners email disposables disposable domain mailinator c# .net csharp dotnet</PackageTags>
-        <Copyright>Copyright © 2023 Jake Soenneker</Copyright>
+        <Copyright>Copyright © 2024 Jake Soenneker</Copyright>
         <Authors>Jake Soenneker</Authors>
         <Company>https://soenneker.com</Company>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
