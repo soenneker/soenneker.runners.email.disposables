@@ -42,7 +42,7 @@
 
 
     <ItemGroup>
-        <PackageReference Include="Soenneker.Extensions.LoggerConfiguration" Version="3.0.715" />
+        <PackageReference Include="Soenneker.Extensions.LoggerConfiguration" Version="3.0.718" />
 
         <PackageReference Include="Soenneker.Git.Util" Version="3.0.2145" />
 
