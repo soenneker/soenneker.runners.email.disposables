@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Soenneker.Runners.Email.Disposables.Utils.Abstract;
+using Soenneker.Utils.File.Download.Abstract;
 
 namespace Soenneker.Runners.Email.Disposables;
 
@@ -15,20 +16,20 @@ public class ConsoleHostedService : IHostedService
 
     private readonly IHostApplicationLifetime _appLifetime;
     private readonly IFileOperationsUtil _fileOperationsUtil;
-    private readonly IDownloadUtil _downloadUtil;
+    private readonly IFileDownloadUtil _fileDownloadUtil;
 
     private int? _exitCode;
 
-    public ConsoleHostedService(ILogger<ConsoleHostedService> logger, IHostApplicationLifetime appLifetime, 
-        IFileOperationsUtil fileOperationsUtil,IDownloadUtil downloadUtil)
+    public ConsoleHostedService(ILogger<ConsoleHostedService> logger, IHostApplicationLifetime appLifetime,
+        IFileOperationsUtil fileOperationsUtil, IFileDownloadUtil fileDownloadUtil)
     {
         _logger = logger;
         _appLifetime = appLifetime;
         _fileOperationsUtil = fileOperationsUtil;
-        _downloadUtil = downloadUtil;
+        _fileDownloadUtil = fileDownloadUtil;
     }
 
-    public Task StartAsync(CancellationToken cancellationToken)
+    public Task StartAsync(CancellationToken cancellationToken = default)
     {
         _appLifetime.ApplicationStarted.Register(() =>
         {
@@ -38,9 +39,9 @@ public class ConsoleHostedService : IHostedService
 
                 try
                 {
-                    string filePath = await _downloadUtil.Download();
+                    string? filePath = await _fileDownloadUtil.Download("https://raw.githubusercontent.com/disposable/disposable-email-domains/master/domains.txt", fileExtension: ".7z", cancellationToken: cancellationToken);
 
-                    await _fileOperationsUtil.Process(filePath);
+                    await _fileOperationsUtil.Process(filePath!, cancellationToken);
 
                     _logger.LogInformation("Complete!");
 
@@ -53,7 +54,7 @@ public class ConsoleHostedService : IHostedService
 
                     _logger.LogError(e, "Unhandled exception");
 
-                    await Task.Delay(2000);
+                    await Task.Delay(2000, cancellationToken);
                     _exitCode = 1;
                 }
                 finally
