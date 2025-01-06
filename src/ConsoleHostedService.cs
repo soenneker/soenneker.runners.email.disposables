@@ -1,11 +1,10 @@
 using System;
 using System.Diagnostics;
-using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Soenneker.Runners.Email.Disposables.Utils.Abstract;
+using Soenneker.Managers.Runners.Abstract;
 using Soenneker.Utils.File.Download.Abstract;
 
 namespace Soenneker.Runners.Email.Disposables;
@@ -15,17 +14,17 @@ public class ConsoleHostedService : IHostedService
     private readonly ILogger<ConsoleHostedService> _logger;
 
     private readonly IHostApplicationLifetime _appLifetime;
-    private readonly IFileOperationsUtil _fileOperationsUtil;
+    private readonly IRunnersManager _runnersManager;
     private readonly IFileDownloadUtil _fileDownloadUtil;
 
     private int? _exitCode;
 
     public ConsoleHostedService(ILogger<ConsoleHostedService> logger, IHostApplicationLifetime appLifetime,
-        IFileOperationsUtil fileOperationsUtil, IFileDownloadUtil fileDownloadUtil)
+        IRunnersManager runnersManager, IFileDownloadUtil fileDownloadUtil)
     {
         _logger = logger;
         _appLifetime = appLifetime;
-        _fileOperationsUtil = fileOperationsUtil;
+        _runnersManager = runnersManager;
         _fileDownloadUtil = fileDownloadUtil;
     }
 
@@ -39,9 +38,9 @@ public class ConsoleHostedService : IHostedService
 
                 try
                 {
-                    string? filePath = await _fileDownloadUtil.Download("https://raw.githubusercontent.com/disposable/disposable-email-domains/master/domains.txt", fileExtension: ".7z", cancellationToken: cancellationToken);
+                    string? filePath = await _fileDownloadUtil.Download("https://raw.githubusercontent.com/disposable/disposable-email-domains/master/domains.txt", fileExtension: ".txt", cancellationToken: cancellationToken);
 
-                    await _fileOperationsUtil.Process(filePath!, cancellationToken);
+                    await _runnersManager.PushIfChangesNeeded(filePath, Constants.FileName, Constants.Library, $"https://github.com/soenneker/{Constants.Library}", cancellationToken);
 
                     _logger.LogInformation("Complete!");
 

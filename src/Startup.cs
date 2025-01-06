@@ -1,13 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
-using Soenneker.Git.Util.Registrars;
-using Soenneker.Runners.Email.Disposables.Utils;
-using Soenneker.Runners.Email.Disposables.Utils.Abstract;
-using Soenneker.Utils.Dotnet.NuGet.Registrars;
-using Soenneker.Utils.Dotnet.Registrars;
+using Soenneker.Managers.Runners.Registrars;
 using Soenneker.Utils.File.Download.Registrars;
-using Soenneker.Utils.FileSync.Registrars;
-using Soenneker.Utils.HttpClientCache.Registrar;
-using Soenneker.Utils.SHA3.Registrars;
 
 namespace Soenneker.Runners.Email.Disposables;
 
@@ -24,14 +17,7 @@ public class Startup
 
     public static IServiceCollection SetupIoC(IServiceCollection services)
     {
-        services.AddHttpClientCache();
-        services.AddHostedService<ConsoleHostedService>();
-        services.AddFileUtilSyncAsScoped();
-        services.AddGitUtilAsScoped();
-        services.AddSha3UtilAsScoped();
-        services.AddScoped<IFileOperationsUtil, FileOperationsUtil>();
-        services.AddDotnetNuGetUtilAsScoped();
-        services.AddDotnetUtilAsScoped();
+        services.AddRunnersManagerAsScoped();
         services.AddFileDownloadUtilAsScoped();
 
         return services;
