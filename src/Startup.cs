@@ -17,9 +17,7 @@ public class Startup
 
     public static IServiceCollection SetupIoC(IServiceCollection services)
     {
-        services.AddHostedService<ConsoleHostedService>();
-        services.AddRunnersManagerAsScoped();
-        services.AddFileDownloadUtilAsScoped();
+        services.AddHostedService<ConsoleHostedService>().AddRunnersManagerAsScoped().AddFileDownloadUtilAsScoped();
 
         return services;
     }
