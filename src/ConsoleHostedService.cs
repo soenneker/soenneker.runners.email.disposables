@@ -19,8 +19,8 @@ public class ConsoleHostedService : IHostedService
 
     private int? _exitCode;
 
-    public ConsoleHostedService(ILogger<ConsoleHostedService> logger, IHostApplicationLifetime appLifetime,
-        IRunnersManager runnersManager, IFileDownloadUtil fileDownloadUtil)
+    public ConsoleHostedService(ILogger<ConsoleHostedService> logger, IHostApplicationLifetime appLifetime, IRunnersManager runnersManager,
+        IFileDownloadUtil fileDownloadUtil)
     {
         _logger = logger;
         _appLifetime = appLifetime;
@@ -38,9 +38,12 @@ public class ConsoleHostedService : IHostedService
 
                 try
                 {
-                    string? filePath = await _fileDownloadUtil.Download("https://raw.githubusercontent.com/disposable/disposable-email-domains/master/domains.txt", fileExtension: ".txt", cancellationToken: cancellationToken);
+                    string? filePath = await _fileDownloadUtil.Download(
+                        "https://raw.githubusercontent.com/disposable/disposable-email-domains/master/domains.txt", fileExtension: ".txt",
+                        cancellationToken: cancellationToken);
 
-                    await _runnersManager.PushIfChangesNeeded(filePath!, Constants.FileName, Constants.Library, $"https://github.com/soenneker/{Constants.Library}", cancellationToken);
+                    await _runnersManager.PushIfChangesNeeded(filePath!, Constants.FileName, Constants.Library,
+                        $"https://github.com/soenneker/{Constants.Library}", false, cancellationToken);
 
                     _logger.LogInformation("Complete!");
 
