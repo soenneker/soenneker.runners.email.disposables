@@ -38,7 +38,7 @@ jobs:
         run: dotnet build test/Soenneker.Runners.Email.Disposables.Tests/Soenneker.Runners.Email.Disposables.Tests.csproj --configuration Release --no-restore --verbosity minimal
 
       - name: Test
-        run: dotnet test test/Soenneker.Runners.Email.Disposables.Tests/Soenneker.Runners.Email.Disposables.Tests.csproj --configuration Release --no-build --no-restore --verbosity minimal
+        run: dotnet test --project test/Soenneker.Runners.Email.Disposables.Tests/Soenneker.Runners.Email.Disposables.Tests.csproj --configuration Release --no-build --no-restore --verbosity minimal
 
       - name: Pack
         run: dotnet pack src/Soenneker.Runners.Email.Disposables/Soenneker.Runners.Email.Disposables.csproj --configuration Release --no-build --no-restore --output . --verbosity minimal
