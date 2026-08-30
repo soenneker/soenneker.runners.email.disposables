@@ -50,7 +50,10 @@ public class ConsoleHostedService : IHostedService
                         "https://raw.githubusercontent.com/disposable/disposable-email-domains/master/domains.txt", fileExtension: ".txt",
                         cancellationToken: cancellationToken);
 
-                    await _runnersManager.PushIfChangesNeeded(filePath!, Constants.FileName, Constants.Library,
+                    if (filePath is null)
+                        throw new InvalidOperationException("The disposable email domain list could not be downloaded.");
+
+                    await _runnersManager.PushIfChangesNeeded(filePath, Constants.FileName, Constants.Library,
                         $"https://github.com/soenneker/{Constants.Library}", false, cancellationToken);
 
                     _logger.LogInformation("Complete!");

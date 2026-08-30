@@ -6,7 +6,6 @@ using Microsoft.Extensions.Hosting;
 using Serilog;
 using Soenneker.Enums.DeployEnvironment;
 using Soenneker.Extensions.LoggerConfiguration;
-using Soenneker.Extensions.String;
 
 namespace Soenneker.Runners.Email.Disposables;
 
@@ -28,7 +27,7 @@ public class Program
     {
         _environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
 
-        if (_environment.IsNullOrWhiteSpace())
+        if (string.IsNullOrWhiteSpace(_environment))
             throw new Exception("ASPNETCORE_ENVIRONMENT is not set");
 
         // Declare CancellationTokenSource in a broader scope
