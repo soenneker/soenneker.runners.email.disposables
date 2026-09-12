@@ -1,6 +1,7 @@
 name: daily-automatic-update
 
 permissions:
+  id-token: write
   contents: read
 
 concurrency:
@@ -18,7 +19,6 @@ env:
   GH__TOKEN: ${{ secrets.GH__TOKEN }}
   GIT__NAME: ${{ secrets.GIT__NAME }}
   GIT__EMAIL: ${{ secrets.GIT__EMAIL }}
-  NUGET__TOKEN: ${{ secrets.NUGET__TOKEN }}
   PipelineEnvironment: true
   NUGET_XMLDOC_MODE: skip
 
@@ -47,5 +47,13 @@ jobs:
       - name: Build
         run: dotnet build src/Soenneker.Runners.Email.Disposables/Soenneker.Runners.Email.Disposables.csproj --configuration Release --no-restore
 
+      - name: Log in to NuGet
+        uses: NuGet/login@v1
+        id: nuget-login
+        with:
+          user: soenneker
+
       - name: Run
+        env:
+          NUGET__TOKEN: ${{ steps.nuget-login.outputs.NUGET_API_KEY }}
         run: dotnet run --project src/Soenneker.Runners.Email.Disposables/Soenneker.Runners.Email.Disposables.csproj --configuration Release --no-restore --no-build --verbosity normal
